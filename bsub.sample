@@ -5,16 +5,15 @@
 # project.                                                                 #
 ############################################################################
 
-#PBS -e err
-#PBS -o out
-#PBS -N SampleApp
-#PBS -A JOBACCOUNT
-#PBS -q QUEUE
-#PBS -l select=1:ncpus=NPROCS
-#PBS -l walltime=00:30:00
-#PBS -W umask=027
-
-cd $PBS_O_WORKDIR
+#BSUB -e err
+#BSUB -o out
+#BSUB -J SampleApp
+#BSUB -q QUEUE
+#BSUB -P JOBACCOUNT
+#BSUB -n NPROCS
+#BSUB -R "span[ptile=NPROCS]"
+#BSUB -x
+#BSUB -W 00:30
 
 set -x
 
@@ -32,7 +31,7 @@ ulimit -d unlimited #datasize
 ulimit -m unlimited #memoryuse
 
 echo "Model started:  " `date`
-APP_LAUNCHER -n NPROCS ./sample_app.exe
+APP_LAUNCHER ./sample_app.exe
 echo "Model ended:    " `date`
 
 exit
